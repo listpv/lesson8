@@ -23,6 +23,14 @@ public class ChainingHashMap<Key, Value> {
             this.key = key;
             this.value = value;
         }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "key=" + key +
+                    ", value=" + value +
+                    '}';
+        }
     }
 
     public int size() {
@@ -71,12 +79,41 @@ public class ChainingHashMap<Key, Value> {
         return null;
     }
 
+    public boolean delete(Key key){
+
+        checkKeyNotNull(key);
+        int i = hash(key);
+        for(Node node : st[i]){
+            if(key.equals(node.key)){
+                size--;
+                return  st[i].remove(node);
+            }
+        }
+        return false;
+    }
+
+    public Node deleteAndNode(Key key){
+
+        checkKeyNotNull(key);
+        int i = hash(key);
+        for(Node node : st[i]){
+            if(key.equals(node.key)){
+                Node temp = node;
+                st[i].remove(node);
+                size--;
+                return temp;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < capacity; i++) {
             for (Node node : st[i]) {
                 sb.append(node.key).append(" ");
+//                sb.append(node).append(" ");
             }
             sb.append(System.lineSeparator());
         }
